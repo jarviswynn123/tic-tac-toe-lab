@@ -9,6 +9,8 @@ const winningCombos = [
   [0, 4, 8],
   [2, 4, 6]
 ]
+const gameOverSound = new Audio('../assets/gameover.wav')
+const turnSound = new Audio('../assets/turn.mp3')
 
 /*--------- Variables (state) ----------*/
 let board, turn, winner, tie
@@ -39,25 +41,25 @@ function render() {
 function updateBoard() {
   board.forEach((cell, idx) => {
     if (cell === 'X') {
-      squareEls[idx].textContent = 'X'
-      // squareEls[idx].style.backgroundColor = 'green'
+      squareEls[idx].textContent = '🦊'
+      squareEls[idx].style.backgroundColor = '#468189'
     } else if (cell === 'O') {
-      squareEls[idx].textContent = 'O'
-      // squareEls[idx].style.backgroundColor = 'blue'
+      squareEls[idx].textContent = '🐰'
+      squareEls[idx].style.backgroundColor = '#F4E9CD'
     } else {
       squareEls[idx].textContent = ''
-      // squareEls[idx].style.backgroundColor = 'white'
+      squareEls[idx].style.backgroundColor = 'white'
     }
   })
 }
 
 function updateMessage() {
   if (!winner && !tie) {
-    messageEl.textContent = `It is ${turn}'s turn`
+    messageEl.textContent = `It is ${turn === 'X' ? '🦊' : '🐰'}'s turn`
   } else if (!winner && tie) {
     messageEl.textContent = "Cat's game.  Meow!!! 😻"
   } else {
-    messageEl.textContent = `${turn} wins the game!`
+    messageEl.textContent = `${turn === 'X' ? '🦊' : '🐰'} wins the game!`
   }
 }
 
@@ -98,6 +100,7 @@ function checkForTie() {
   }
   if (!board.includes('')) {
     tie = true
+    gameOverSound.play()
   }
 }
 
@@ -105,6 +108,7 @@ function switchPlayerTurn() {
   if (winner) {
     return
   }
+  turnSound.play()
   if (turn === 'X') {
     turn = 'O'
   } else {
@@ -134,5 +138,3 @@ resetBtnEl.addEventListener('click', init)
 //6) Handle a player clicking a square with a `handleClick` function.
 
 //7) Create Reset functionality.
-
-  
